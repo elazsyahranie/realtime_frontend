@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+
+body {
+  background-color: #f6f6f6;
+  font-family: "Rubik", sans-serif;
+}
+
+.noBorder {
+  border: none;
+}
+
+.whiteBackground {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.purpleText {
+  color: #7e98df;
+}
+
+.lightBlueButton {
+  background-color: #7e98df;
+  height: 60px;
+  width: 360px;
+  border-radius: 70px;
+}
+
+.lightBlueButtonOutline {
+  border: 1px solid #7e98df;
+  color: #7e98df;
+  background: transparent;
+  height: 60px;
+  width: 360px;
+  border-radius: 70px;
+}
+
+.loginline {
+  display: flex;
+  flex-direction: row;
+}
+.loginline:before,
+.loginline:after {
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+.loginline:before {
+  margin-right: 1rem;
+}
+.loginline:after {
+  margin-left: 1rem;
+}
+
+.formBelowOnly {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #232323;
+  border-radius: 0px;
+}
+
+.grayText {
+  color: #848484;
+}

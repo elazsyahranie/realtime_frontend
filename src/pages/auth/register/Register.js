@@ -1,16 +1,11 @@
 import React, { Component } from "react";
+// import { useState } from "react";
 import { Row, Col, Container, Form } from "react-bootstrap";
-import loginStyle from "./Login.module.css";
+import loginStyle from "./Register.module.css";
 import { connect } from "react-redux";
-import { login } from "../../../redux/action/auth";
+import { RegisterUser } from "../../../redux/action/auth";
 
-class Login extends Component {
-  // const handleLogin = (event) => {
-  //   event.preventDefault();
-  //   // localStorage.setItem("token", username);
-  //   props.history.push("/chat");
-  // };
-
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,10 +26,10 @@ class Login extends Component {
     });
   };
 
-  handleLogin = (event) => {
+  handleRegister = (event) => {
     event.preventDefault();
     console.log(this.state.form);
-    this.props.login(this.state.form).then((result) => {
+    this.props.RegisterUser(this.state.form).then((result) => {
       console.log(result);
     });
   };
@@ -54,10 +49,10 @@ class Login extends Component {
             >
               <Row className={`w-100 px-5`}>
                 <h4 className={`${loginStyle.purpleText} text-center py-4`}>
-                  Login
+                  Register
                 </h4>
                 <h6 className={`py-4`}>Hi! Welcome back</h6>
-                <Form className="w-100" onSubmit={this.handleLogin}>
+                <Form className="w-100" onSubmit={this.handleRegister}>
                   <Form.Group className="mb-4">
                     <Form.Label className={loginStyle.grayText}>
                       Name
@@ -65,7 +60,7 @@ class Login extends Component {
                     <Form.Control
                       type="text"
                       placeholder="Enter Name"
-                      bsstyle="default"
+                      bsStyle="default"
                       className={loginStyle.formBelowOnly}
                       name="userFullName"
                       value={userFullName}
@@ -80,7 +75,7 @@ class Login extends Component {
                     </Form.Label>
                     <Form.Control
                       type="password"
-                      bsstyle="default"
+                      bsStyle="default"
                       name="userPassword"
                       value={userPassword}
                       className={loginStyle.formBelowOnly}
@@ -116,6 +111,6 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = { login };
+const mapDispatchToProps = { RegisterUser };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Register);

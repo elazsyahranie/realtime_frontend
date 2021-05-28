@@ -7,6 +7,7 @@ import PrivateRoute from "./helpers/PrivateRoute";
 import PublicRoute from "./helpers/PublicRoute";
 
 import Login from "./pages/auth/Login/Login";
+import SignUp from "./pages/auth/register/Register";
 import Chat from "./pages/main/Chat/Chat";
 import Counter from "./pages/main/Counter/CounterFunctional";
 
@@ -20,6 +21,12 @@ function App() {
             path="/login"
             exact
             component={Login}
+          />
+          <PublicRoute
+            restricted={true}
+            path="/register"
+            exact
+            component={SignUp}
           />
           <PrivateRoute path="/chat" exact component={Chat} />
           <PrivateRoute path="/counter" exact component={Counter} />
