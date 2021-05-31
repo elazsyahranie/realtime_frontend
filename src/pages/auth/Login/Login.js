@@ -36,8 +36,15 @@ class Login extends Component {
     console.log(this.state.form);
     this.props.login(this.state.form).then((result) => {
       console.log(this.props.auth.data.token);
+      // const accountInfo = result.value.data.data.token;
+      // console.log(accountInfo);
       localStorage.setItem("token", this.props.auth.data.token);
+      this.props.history.push("/chat");
+      // localStorage.setItem("token", this.props.auth.data.token);
     });
+
+    // localStorage.setItem("token", this.state.form.userFullName);
+    // this.props.history.push("/chat");
   };
 
   render() {
@@ -92,7 +99,10 @@ class Login extends Component {
                   <span className="text-end d-block pt-4 pb-5">
                     Forgot password?
                   </span>
-                  <button className={`${loginStyle.lightBlueButton} btn w-100`}>
+                  <button
+                    className={`${loginStyle.lightBlueButton} btn w-100`}
+                    type="submit"
+                  >
                     Login
                   </button>
                   <span className={`${loginStyle.loginline} py-4`}>
@@ -117,6 +127,10 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
 const mapDispatchToProps = { login };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

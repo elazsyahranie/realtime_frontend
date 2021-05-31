@@ -1,79 +1,86 @@
-import { useState } from "react";
+import React, { Component } from "react";
 import Navbar from "../../../components/Navbar";
 import styles from "./Chat.module.css";
-import { Container, Form, Row, Col } from "react-bootstrap";
+// import axiosApiInstances from "../../utils/axios";
+import { Container, Row, Col } from "react-bootstrap";
+import { connect } from "react-redux";
+import { roomchat } from "../../../redux/action/roomchat";
+// import { login } from "../../../redux/action/auth";
 
-function Chat(props) {
-  // const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
+class Chat extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      form: {
+        username: "Elazar",
+        message: "",
+      },
+    };
+  }
 
-  const handleSelectRoom = (event) => {
-    console.log(event.target.value);
+  componentDidMount = () => {
+    this.handleRoomChat();
   };
 
-  const handleChangeText = (event) => {
-    setMessage(event.target.value);
+  changeText = (event) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [event.target.name]: event.target.value,
+      },
+    });
   };
 
-  const handleSendMessage = () => {
-    console.log("Send Message :", message);
+  handleRoomChat = () => {
+    this.props.roomchat(3).then((result) => {
+      console.log(result.value.data.data);
+    });
   };
 
-  return (
-    <Container className="text-center">
-      <Navbar />
-      <h1>Chat App</h1>
-      <hr />
-      <Form>
-        <Form.Group>
-          <Form.Control
-            as="select"
-            size="lg"
-            onChange={(event) => handleSelectRoom(event)}
-          >
-            <option value="">Pilih Room ...</option>
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="js">JS</option>
-          </Form.Control>
-        </Form.Group>
-      </Form>
-      <hr />
-      <Row>
-        <Col sm={2}>
-          <div className={styles.chat}>
-            <div className={styles.chatWindow}>
-              <p className={styles.room}>User 1</p>
-              <hr />
-              <p className={styles.room}>User 2</p>
-              <hr />
-            </div>
-          </div>
-        </Col>
-        <Col sm={10}>
-          <div className={styles.chat}>
-            <div className={styles.chatWindow}>
-              <div className={styles.output}>
-                <p>
-                  <strong>Bagus : </strong>
-                  Hai !
-                </p>
-              </div>
-            </div>
-            <input
-              className={styles.inputMessage}
-              onChange={(event) => handleChangeText(event)}
-              type="text"
-              placeholder="Message"
-            />
-            <button onClick={handleSendMessage} className={styles.btnSubmit}>
-              Send
-            </button>
-          </div>
-        </Col>
-      </Row>
-    </Container>
-  );
+  handleChat = (event) => {
+    event.preventDefault(); //event dipakai kalau ingin pindah halaman
+    console.log(this.state.form);
+    console.log(this.props.login);
+  };
+
+  render() {
+    const { username, message } = this.state.form;
+    const { user_name } = this.props.auth.data;
+    console.log(this.props);
+    return (
+      <>
+        <Container className="text-center pb-3">
+          <Navbar />
+        </Container>
+        <Container fluid>
+          <Row>
+            <Col lg={3} md={3} sm={3} xs={12}>
+              <h1>Telegram</h1>
+              <Row className={`${styles.chat}`}>
+                {this.props.chatlist.data.map((item, index) => {
+                  return (
+                    <p key={index} className={styles.room}>
+                      {item.user_name}
+                    </p>
+                  );
+                })}
+              </Row>
+            </Col>
+            <Col lg={10} md={10} sm={10} xs={12}></Col>
+          </Row>
+        </Container>
+      </>
+    );
+  }
 }
 
-export default Chat;
+// mapStatetoProps digunakan untuk mengambil data dari redux
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  chatlist: state.roomchat,
+});
+
+// Untuk menjalankan 'const login' atau apapun yang sudah di export oleh action/auth
+const mapDispatchToProps = { roomchat };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

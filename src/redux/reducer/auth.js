@@ -19,7 +19,7 @@ const auth = (state = initialState, action) => {
         isLoading: false,
         isError: false,
         data: action.payload.data.data,
-        msg: action.payload.data.data,
+        // msg: action.payload.data.data,
       };
     case "REGISTER_REJECTED": // rejected = proses kkalau gagal
       return {
