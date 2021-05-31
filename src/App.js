@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
+import { useState, useEffect } from "react";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
@@ -7,14 +8,29 @@ import { PersistGate } from "redux-persist/integration/react";
 import PrivateRoute from "./helpers/PrivateRoute";
 import PublicRoute from "./helpers/PublicRoute";
 
+import io from "socket.io-client";
+
 import Login from "./pages/auth/Login/Login";
 import SignUp from "./pages/auth/register/Register";
 import Chat from "./pages/main/Chat/Chat";
 import Counter from "./pages/main/Counter/CounterFunctional";
 
-import haveLogIn from "./pages/auth/haveLogIn/haveLogIn";
-
 function App() {
+  const [socket, setSocket] = useState(null);
+  const setUpSocket = () => {
+    const newSocket = io.connect("http://localhost:3003", {
+      path: "/backend3/socket.io",
+    });
+    newSocket.on("connect", () => {
+      console.log("Connected Socket Client !");
+    });
+    setSocket(newSocket);
+  };
+
+  useEffect(() => {
+    setUpSocket();
+  }, []);
+
   return (
     <Provider store={store}>
       <PersistGate Loading={null} persistor={persistor}>
@@ -31,12 +47,6 @@ function App() {
               path="/register"
               exact
               component={SignUp}
-            />
-            <PublicRoute
-              restricted={true}
-              path="/havelogin"
-              exact
-              component={haveLogIn}
             />
             <PrivateRoute path="/chat" exact component={Chat} />
             {/* <PrivateRoute path="/counter" exact component={Counter} /> */}
