@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Navbar from "../../../components/Navbar";
 import styles from "./Chat.module.css";
 // import axiosApiInstances from "../../utils/axios";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import { connect } from "react-redux";
+
 import { roomchat } from "../../../redux/action/roomchat";
 // import { login } from "../../../redux/action/auth";
 
@@ -12,14 +13,24 @@ class Chat extends Component {
     super(props);
     this.state = {
       form: {
-        username: "Elazar",
+        username: "",
         message: "",
+        messages: "",
       },
     };
   }
 
   componentDidMount = () => {
     this.handleRoomChat();
+    console.log("Test ComponentDidMount");
+  };
+
+  componentDidUpdate = () => {
+    if (this.props.socket) {
+      this.props.socket.on("chatMessage", (dataMessage) => {
+        this.setMessages(...this.messages, dataMessage);
+      });
+    }
   };
 
   changeText = (event) => {
@@ -38,9 +49,15 @@ class Chat extends Component {
   };
 
   handleChat = (event) => {
+    const { message } = this.state.form;
+    const { user_name } = this.props.auth.data;
+    console.log(`${user_name}: ${message}`);
+    console.log(this.props.socket);
+    const tryChat = { user_name, message };
+    this.props.socket.emit("globalMessage", tryChat);
     event.preventDefault(); //event dipakai kalau ingin pindah halaman
-    console.log(this.state.form);
-    console.log(this.props.login);
+    // console.log(this.state.form);
+    // console.log(this.props.login);
   };
 
   render() {
@@ -66,7 +83,25 @@ class Chat extends Component {
                 })}
               </Row>
             </Col>
-            <Col lg={10} md={10} sm={10} xs={12}></Col>
+            <Col lg={9} md={9} sm={9} xs={12}>
+              <Row className={`${styles.chat}`}>
+                <h2>Room Chat Here!</h2>
+                <Form onSubmit={this.handleChat}>
+                  <p></p>
+                  <input
+                    className={styles.inputMessage}
+                    type="text"
+                    onChange={(event) => this.changeText(event)}
+                    name="message"
+                    value={message}
+                    placeholder="Message"
+                  />
+                  <button className={styles.btnSubmit} type="submit">
+                    Send
+                  </button>
+                </Form>
+              </Row>
+            </Col>
           </Row>
         </Container>
       </>

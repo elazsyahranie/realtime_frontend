@@ -13,10 +13,10 @@ import io from "socket.io-client";
 import Login from "./pages/auth/Login/Login";
 import SignUp from "./pages/auth/register/Register";
 import Chat from "./pages/main/Chat/Chat";
-import Counter from "./pages/main/Counter/CounterFunctional";
+// import Counter from "./pages/main/Counter/CounterFunctional";
 
 function App() {
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null); // harus pakai kurung siku [array], bukan kurung kurawal {object}
   const setUpSocket = () => {
     const newSocket = io.connect("http://localhost:3003", {
       path: "/backend3/socket.io",
@@ -48,7 +48,8 @@ function App() {
               exact
               component={SignUp}
             />
-            <PrivateRoute path="/chat" exact component={Chat} />
+            {/* socket={socket} di lempar dari kdodingan di atas return() */}
+            <PrivateRoute socket={socket} path="/chat" exact component={Chat} />
             {/* <PrivateRoute path="/counter" exact component={Counter} /> */}
           </Switch>
         </Router>
